@@ -7,8 +7,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AccountService {
+    private final AccountMapper accountMapper;
+
     @Autowired
-    private AccountMapper accountMapper;
+    public AccountService(AccountMapper accountMapper) {
+        this.accountMapper = accountMapper;
+    }
 
     public boolean userRegister(String username,String password){
         if(username==null||username.equals(" ")||password==null||password.equals(" ")){
