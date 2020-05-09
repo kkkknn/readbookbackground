@@ -1,8 +1,7 @@
 package com.example.readbookbackground.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.readbookbackground.service.BookService;
-import net.sf.json.JSONException;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,20 +50,12 @@ public class BookController {
     private JSONObject getResponseJSON(JSONObject object){
         JSONObject retObject=new JSONObject();
         if(object!=null){
-            try {
-                retObject.put("code","success");
-                retObject.put("data",object);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            retObject.put("code","success");
+            retObject.put("data",object);
             return retObject;
         }else{
-            try {
-                retObject.put("code","error");
-                retObject.put("data","错误原因");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            retObject.put("code","error");
+            retObject.put("data","错误原因");
             return retObject;
         }
     }

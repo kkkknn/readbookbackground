@@ -1,9 +1,8 @@
 package com.example.readbookbackground.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.readbookbackground.enums.AccountInfo;
 import com.example.readbookbackground.service.AccountService;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,25 +28,19 @@ public class UserController {
     @ResponseBody
     @RequestMapping("/Login")
     public JSONObject Login(JSONObject object){
-        try {
-            AccountInfo info=new AccountInfo();
-            info.setAccount_name(object.getString("userName"));
-            info.setAccount_password(object.getString("userPassword"));
-            JSONObject jsonObject=new JSONObject();
-            if(accountService.userLogin(info)){
-                jsonObject.put("code","success");
-                jsonObject.put("data","login token");
+        AccountInfo info=new AccountInfo();
+        info.setAccount_name(object.getString("userName"));
+        info.setAccount_password(object.getString("userPassword"));
+        JSONObject jsonObject=new JSONObject();
+        if(accountService.userLogin(info)){
+            jsonObject.put("code","success");
+            jsonObject.put("data","login token");
 
-                return jsonObject;
-            }else{
-                jsonObject.put("code","error");
-                jsonObject.put("data","error 原因");
-                return jsonObject;
-            }
-        } catch (JSONException e) {
-            System.out.println("json 转换异常，获取值可能为空");
-            e.printStackTrace();
-            return null;
+            return jsonObject;
+        }else{
+            jsonObject.put("code","error");
+            jsonObject.put("data","error 原因");
+            return jsonObject;
         }
     }
 
@@ -55,30 +48,23 @@ public class UserController {
     @RequestMapping("/Register")
     public JSONObject Register(JSONObject object){
         String name="",password="";
-        try {
-            name=object.getString("userName");
-            password=object.getString("userPassword");
-            if(name!=null&&password!=null&&!name.equals("")&&!password.equals("")){
-                boolean result=accountService.userRegister(name,password);
-                JSONObject jsonObject=new JSONObject();
-                if(result){
-                        jsonObject.put("code","success");
+        name=object.getString("userName");
+        password=object.getString("userPassword");
+        if(name!=null&&password!=null&&!name.equals("")&&!password.equals("")){
+            boolean result=accountService.userRegister(name,password);
+            JSONObject jsonObject=new JSONObject();
+            if(result){
+                    jsonObject.put("code","success");
 
-                    jsonObject.put("data","Register 成功");
-                    return jsonObject;
-                }else{
-                    jsonObject.put("code","error");
-                    jsonObject.put("data","error 原因");
-                    return jsonObject;
-                }
+                jsonObject.put("data","Register 成功");
+                return jsonObject;
+            }else{
+                jsonObject.put("code","error");
+                jsonObject.put("data","error 原因");
+                return jsonObject;
             }
-            System.out.println("数据为空");
-            return  null;
-        } catch (JSONException e) {
-            System.out.println("json 转换异常，获取值可能为空");
-            e.printStackTrace();
         }
-        System.out.println("转换错误");
+        System.out.println("数据为空");
         return  null;
     }
 

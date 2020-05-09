@@ -1,7 +1,7 @@
 package com.example.readbookbackground.util.BookSource;
 
 
-import net.sf.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
 
 public interface BQGSourceImp {
     JSONObject getBookInfo(String url);
