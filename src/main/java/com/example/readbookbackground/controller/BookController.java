@@ -2,12 +2,11 @@ package com.example.readbookbackground.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.readbookbackground.service.BookService;
+import com.example.readbookbackground.util.redis.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.ArrayList;
 /*
  * 主要分为以下几个接口
  * 1. 搜索，查询几个平台并返回搜索结果，
@@ -20,10 +19,12 @@ import java.util.ArrayList;
 @Controller
 public class BookController {
     private final BookService bookService;
+    private final RedisService redisService;
 
     @Autowired
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, RedisService redisService) {
         this.bookService = bookService;
+        this.redisService = redisService;
     }
 
     @ResponseBody
@@ -44,6 +45,18 @@ public class BookController {
         }
         JSONObject retObject=bookService.getBookInfo(bookUrl,mode);
         return getResponseJSON(retObject).toString();
+    }
+
+    @ResponseBody
+    @RequestMapping("/test1")
+    public String test1(){
+        redisService.set("1112","12321");
+        return "6666";
+    }
+    @ResponseBody
+    @RequestMapping("/test2")
+    public String test2(){
+        return redisService.get("1111").toString();
     }
 
 
