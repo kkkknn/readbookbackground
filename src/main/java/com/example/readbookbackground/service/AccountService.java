@@ -1,17 +1,23 @@
 package com.example.readbookbackground.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.readbookbackground.enums.AccountInfo;
 import com.example.readbookbackground.mapper.AccountMapper;
+import com.example.readbookbackground.util.redis.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public class AccountService {
     private final AccountMapper accountMapper;
+    private final RedisService redisService;
 
     @Autowired
-    public AccountService(AccountMapper accountMapper) {
+    public AccountService(AccountMapper accountMapper, RedisService redisService) {
         this.accountMapper = accountMapper;
+        this.redisService = redisService;
     }
 
     public boolean userRegister(String username,String password){
@@ -29,14 +35,27 @@ public class AccountService {
         return accountMapper.insertUser(username,password)==1;
     }
 
-    public boolean userLogin(AccountInfo user){
-        if(user==null){
-            return false;
+    public JSONObject userLogin(String name, String password){
+        AccountInfo accountInfo=accountMapper.loginUser(name,password);
+        JSONObject jsonObject=new JSONObject();
+        if(accountInfo==null){
+            jsonObject.put("code","error");
+            jsonObject.put("data","登录失败，请检查用户名和密码是否正确");
+            return jsonObject;
         }
-        user.setAccount_id(1);
-        user.setAccount_name("李四");
-        //AccountInfo accountInfo=accountMapper.selectUser(user.getAccount_name());
-        System.out.println("用户登录"+user.toString());
-        return accountMapper.updateUser(user)==1;
+        //进行MD5加密并生成token令牌
+        String token= UUID.randomUUID().toString().replace("-","");
+        //在redis中保存,7天有效,以用户name为key
+        String key="token_"+name;
+        if(redisService.set(key,token,604800)){
+            jsonObject.put("code","success");
+            jsonObject.put("data",accountInfo);
+            jsonObject.put("token",token);
+        }else {
+            jsonObject.put("code","error");
+            jsonObject.put("data","令牌获取失败，请联系开发人员");
+        }
+        return jsonObject;
     }
+
 }

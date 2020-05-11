@@ -15,10 +15,12 @@ public interface AccountMapper {
 
     @Select("SELECT * FROM accountInfo where account_name = #{accountName}")
     AccountInfo selectUser(@Param("accountName")String name);
+    
+    @Select("SELECT * FROM accountInfo where account_name = #{accountName} and account_password = #{accountPassword}")
+    AccountInfo loginUser(@Param("accountName")String name,@Param("accountPassword")String password);
 
     @Update("UPDATE accountInfo SET account_name=#{account_name} , account_password=#{account_password} WHERE account_id = #{account_id}")
     int updateUser(AccountInfo user);
-
 
 
 }

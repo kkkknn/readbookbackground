@@ -5,7 +5,6 @@ public class AccountInfo {
     private int account_id;
     private String account_name;
     private String account_password;
-    private boolean account_islogin;
 
     public int getAccount_id() {
         return account_id;
@@ -31,21 +30,12 @@ public class AccountInfo {
         this.account_password = account_password;
     }
 
-    public boolean isAccount_islogin() {
-        return account_islogin;
-    }
-
-    public void setAccount_islogin(boolean account_islogin) {
-        this.account_islogin = account_islogin;
-    }
-
     @Override
     public String toString() {
         return "AccountInfo{" +
                 "account_id=" + account_id +
                 ", account_name='" + account_name + '\'' +
-                ", account_password='" + account_password + '\'' +
-                ", account_islogin=" + account_islogin +
+                ", account_password='" + account_password +
                 '}';
     }
 }

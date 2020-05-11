@@ -1,4 +1,4 @@
-package com.example.readbookbackground.util.BookSource.items;
+package com.example.readbookbackground.util.booksource.items;
 
 public class SearchBookInfo {
     private String book_name;

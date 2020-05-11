@@ -19,12 +19,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class BookController {
     private final BookService bookService;
-    private final RedisService redisService;
 
     @Autowired
-    public BookController(BookService bookService, RedisService redisService) {
+    public BookController(BookService bookService) {
         this.bookService = bookService;
-        this.redisService = redisService;
     }
 
     @ResponseBody
@@ -48,16 +46,20 @@ public class BookController {
     }
 
     @ResponseBody
-    @RequestMapping("/test1")
-    public String test1(){
-        redisService.set("1112","12321");
-        return "6666";
+    @RequestMapping("/AddLikeBook")
+    public String addLikeBook(String accountName,String bookUrl,int mode){
+        //添加相关图书到数据库中，并返回是否成功
+        boolean flag=bookService.
+        return "";
     }
+
+    //打包下载图书文件
     @ResponseBody
-    @RequestMapping("/test2")
-    public String test2(){
-        return redisService.get("1111").toString();
+    @RequestMapping("/DownloadBook")
+    public String downloadBook(){
+        return null;
     }
+
 
 
     private JSONObject getResponseJSON(JSONObject object){

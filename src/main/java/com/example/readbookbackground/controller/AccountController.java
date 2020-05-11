@@ -1,5 +1,6 @@
 package com.example.readbookbackground.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.readbookbackground.enums.AccountInfo;
 import com.example.readbookbackground.service.AccountService;
@@ -16,45 +17,47 @@ import org.springframework.web.bind.annotation.ResponseBody;
 * */
 @Controller
 @RequestMapping("/User")
-public class UserController {
+public class AccountController {
     private final AccountService accountService;
 
     @Autowired
-    public UserController(AccountService accountService) {
+    public AccountController(AccountService accountService) {
         this.accountService = accountService;
     }
 
 
     @ResponseBody
     @RequestMapping("/Login")
-    public JSONObject Login(JSONObject object){
-        AccountInfo info=new AccountInfo();
-        info.setAccount_name(object.getString("userName"));
-        info.setAccount_password(object.getString("userPassword"));
-        JSONObject jsonObject=new JSONObject();
-        if(accountService.userLogin(info)){
-            jsonObject.put("code","success");
-            jsonObject.put("data","login token");
-
-            return jsonObject;
-        }else{
-            jsonObject.put("code","error");
-            jsonObject.put("data","error 原因");
+    public JSONObject Login(String str){
+        JSONObject object= JSON.parseObject(str);
+        String name=object.getString("userName");
+        String password=object.getString("userPassword");
+        if(name==null||password==null||name.equals("")||password.equals("")){
+            JSONObject jsonObject=new JSONObject();
+            jsonObject.put("code", "error");
+            jsonObject.put("data", "用户名/密码为空");
             return jsonObject;
         }
+        return accountService.userLogin(name,password);
     }
 
     @ResponseBody
     @RequestMapping("/Register")
-    public JSONObject Register(JSONObject object){
-        String name="",password="";
-        name=object.getString("userName");
-        password=object.getString("userPassword");
+    public JSONObject Register(String str){
+        if(str==null){
+            JSONObject jsonObject=new JSONObject();
+            jsonObject.put("code", "error");
+            jsonObject.put("data", "用户信息为空");
+            return jsonObject;
+        }
+        JSONObject object= JSON.parseObject(str);
+        String name=object.getString("userName");
+        String password=object.getString("userPassword");
         if(name!=null&&password!=null&&!name.equals("")&&!password.equals("")){
             boolean result=accountService.userRegister(name,password);
             JSONObject jsonObject=new JSONObject();
             if(result){
-                    jsonObject.put("code","success");
+                jsonObject.put("code","success");
 
                 jsonObject.put("data","Register 成功");
                 return jsonObject;

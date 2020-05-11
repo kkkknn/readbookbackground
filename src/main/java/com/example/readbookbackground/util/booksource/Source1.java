@@ -1,13 +1,14 @@
-package com.example.readbookbackground.util.BookSource;
+package com.example.readbookbackground.util.booksource;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.readbookbackground.util.BookSource.items.SearchBookInfo;
+import com.example.readbookbackground.util.booksource.items.SearchBookInfo;
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
@@ -39,6 +40,8 @@ public class Source1 implements BQGSourceImp {
             String author_name=elements.get(0).text().split("：")[1];
             String update_time=elements.get(2).text().split("：")[1];
             String latest_chapter=elements.get(3).select("a").text();
+            String img_url=document.body().select("#fmimg img").attr("src");
+            returnObject.put("bookImg",img_url);
             returnObject.put("authorName",author_name);
             returnObject.put("updateTime",update_time);
             returnObject.put("latestChapter",latest_chapter);
@@ -132,6 +135,52 @@ public class Source1 implements BQGSourceImp {
 
     }
 
+    @Override
+    public String getBookImg(String imgUrl) {
+        if (imgUrl==null||imgUrl.equals("")){
+            return null;
+        }
+        Connection.Response response = null;
+        try {
+            response = Jsoup.connect(URL+imgUrl)
+                    .method(Connection.Method.GET)
+                    .ignoreContentType(true)
+                    .header("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36")
+                    .timeout(15000)
+                    .execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(response==null){
+            return null;
+        }
+        BufferedInputStream bufferedInputStream = response.bodyStream();
+        byte[] buffer = new byte[1024];
+        //实际读取的长度
+        int readLenghth;
+        //根据文件保存地址，创建文件输出流
+        FileOutputStream fileOutputStream = null;
+        try {
+            fileOutputStream = new FileOutputStream(new File("/imgs"+imgUrl));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        //创建的一个写出的缓冲流
+        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
+        try {
+        //文件逐步写入本地//先读出来，保存在buffer数组中
+            while ((readLenghth = bufferedInputStream.read(buffer,0,1024)) != -1){
+                bufferedOutputStream.write(buffer,0,readLenghth);//再从buffer中取出来保存到本地
+            }
+        //关闭缓冲流
+        bufferedOutputStream.close();
+        fileOutputStream.close();
+        bufferedInputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 
 }
