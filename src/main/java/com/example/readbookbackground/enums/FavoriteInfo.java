@@ -1,9 +1,29 @@
 package com.example.readbookbackground.enums;
 
+import java.sql.Timestamp;
+
 public class FavoriteInfo {
     private int favorite_id;
     private int book_id;
     private int account_id;
+    private boolean is_save;
+    private Timestamp update_time;
+
+    public boolean isIs_save() {
+        return is_save;
+    }
+
+    public void setIs_save(boolean is_save) {
+        this.is_save = is_save;
+    }
+
+    public Timestamp getUpdate_time() {
+        return update_time;
+    }
+
+    public void setUpdate_time(Timestamp update_time) {
+        this.update_time = update_time;
+    }
 
     public int getFavorite_id() {
         return favorite_id;
@@ -35,6 +55,8 @@ public class FavoriteInfo {
                 "favorite_id=" + favorite_id +
                 ", book_id=" + book_id +
                 ", account_id=" + account_id +
+                ", is_save=" + is_save +
+                ", update_time=" + update_time +
                 '}';
     }
 }

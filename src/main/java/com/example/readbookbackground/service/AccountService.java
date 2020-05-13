@@ -46,7 +46,7 @@ public class AccountService {
         //进行MD5加密并生成token令牌
         String token= UUID.randomUUID().toString().replace("-","");
         //在redis中保存,7天有效,以用户name为key
-        String key="token_"+name;
+        String key="token_"+accountInfo.getAccount_id();
         if(redisService.set(key,token,604800)){
             jsonObject.put("code","success");
             jsonObject.put("data",accountInfo);

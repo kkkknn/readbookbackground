@@ -2,27 +2,23 @@ package com.example.readbookbackground.util.booksource;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.readbookbackground.util.booksource.items.SearchBookInfo;
-import io.netty.handler.codec.Headers;
-import io.netty.handler.codec.base64.Base64;
-import io.netty.handler.codec.base64.Base64Encoder;
-import org.apache.logging.log4j.util.Base64Util;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Source1 implements BQGSourceImp {
-    private final String URL="https://www.biqudu.net";
+public class Source2 implements BQGSourceImp {
+    private final String URL="http://www.xbiquge.la";
     @Override
     public JSONObject getBookInfo(String url) {
         if(url==null||url.equals("")){
@@ -30,12 +26,12 @@ public class Source1 implements BQGSourceImp {
         }
         //进行爬取查找
         try {
-             Document document=Jsoup.connect(URL+url)
-                     .headers(getHeaders())
-                     .timeout(8000)
-                     .ignoreContentType(true)
-                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36")
-                     .get();
+            Document document=Jsoup.connect(url)
+                    .headers(getHeaders())
+                    .timeout(8000)
+                    .ignoreContentType(true)
+                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36")
+                    .get();
             if(document==null){
                 return null;
             }
@@ -48,7 +44,7 @@ public class Source1 implements BQGSourceImp {
             }
             returnObject.put("bookName",book_name);
             returnObject.put("bookUrl",url);
-            returnObject.put("bookSourceId",1);
+            returnObject.put("bookSourceId",2);
             Elements elements=document.body().select("#info p");
             String author_name=elements.get(0).text().split("：")[1];
             String update_time=elements.get(2).text().split("：")[1];
@@ -59,28 +55,16 @@ public class Source1 implements BQGSourceImp {
             returnObject.put("updateTime",update_time);
             returnObject.put("latestChapter",latest_chapter);
             //循环添加所有章节
-            Elements elementsChapters=document.body().select("#list dl>*");
-            boolean isStart=false;
-            int count=0;
-            String tagName="dt";
+            Elements elementsChapters=document.body().select("#list>dl>dd");
             ArrayList<String[]> arrayList=new ArrayList<>();
             for (Element ele:elementsChapters) {
-                if(isStart){
-                    String chapterUrl=ele.getElementsByTag("a").attr("href");
-                    String chapterName=ele.getElementsByTag("a").text();
+                Elements item=ele.getElementsByTag("a");
+                    String chapterUrl=item.attr("href");
+                    String chapterName=item.text();
                     String[] chapterInfo=new String[2];
                     chapterInfo[0]=chapterName;
                     chapterInfo[1]=chapterUrl;
                     arrayList.add(chapterInfo);
-                }else {
-                    if(tagName.equals(ele.tagName())){
-                        if(count==2){
-                            isStart=true;
-                        }else {
-                            count++;
-                        }
-                    }
-                }
 
             }
             returnObject.put("chapterInfo",arrayList);
@@ -106,34 +90,34 @@ public class Source1 implements BQGSourceImp {
         }
         //进行爬取查找
         try {
-            Document document=Jsoup.connect(URL+"/searchbook.php?keyword="+str+"&page="+page)
+            Document document= Jsoup.connect(URL+"/modules/article/waps.php")
                     .headers(getHeaders())
+                    .data("searchkey",str)
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36")
                     .ignoreContentType(true)
                     .timeout(8000)
-                    .get();
+                    .post();
             if(document==null){
                 return null;
             }
             //开始解析分析
             JSONObject returnObject=new JSONObject();
-            //搜索到的图书结果页数数量,进行字符串拆分
-            String[] pageArr=document.body().select("#pagestats").first().text().split("/");
-            //System.out.println("查询成功，搜索到页数"+pageArr[1]);
-            returnObject.put("page",pageArr[0]);
-            returnObject.put("allPage",pageArr[1]);
-            Elements elements=document.body().select("#hotcontent .item");
+            returnObject.put("page",page);
+            returnObject.put("allPage",page);
+            Elements elements=document.body().select(".grid>tbody tr");
             ArrayList<SearchBookInfo> arrayList=new ArrayList<>();
-            for (Element ele:elements) {
+            for (int i = 1; i < elements.size(); i++) {
+                Element element=elements.get(i);
                 SearchBookInfo searchBookInfo=new SearchBookInfo();
-                searchBookInfo.setAuthor_name(ele.select("dl dt span").text());
-                searchBookInfo.setBook_name(ele.select("dl dt a").text());
-                searchBookInfo.setBook_url(ele.select("dl dt a").attr("href"));
-                searchBookInfo.setBook_about(ele.select("dl dd").text());
-                searchBookInfo.setImg_url(ele.select(".image a img").attr("src"));
-                //System.out.println(searchBookInfo.toString());
+                Elements items=element.select("td");
+
+                searchBookInfo.setAuthor_name(items.get(2).text());
+                searchBookInfo.setBook_name(items.get(0).select("a").text());
+                searchBookInfo.setBook_url(items.get(0).select("a").attr("href"));
+
                 arrayList.add(searchBookInfo);
             }
+            System.out.println("执行完成"+arrayList.size()+"|"+elements.size());
             returnObject.put("data",arrayList);
             return returnObject;
         } catch (MalformedURLException e) {
@@ -146,9 +130,45 @@ public class Source1 implements BQGSourceImp {
         return null;
     }
 
-
     @Override
     public JSONObject getChapter(String chapterUrl) {
+        if(chapterUrl==null||chapterUrl.equals("")){
+            return null;
+        }
+        //进行爬取查找
+        try {
+            Document document=Jsoup.connect(URL+chapterUrl)
+                    .headers(getHeaders())
+                    .timeout(8000)
+                    .ignoreContentType(true)
+                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36")
+                    .get();
+            if(document==null){
+                return null;
+            }
+            //开始解析分析
+            JSONObject returnObject=new JSONObject();
+            String chapter_name=document.body().select(".bookname>h1").text();
+            if(chapter_name==null||chapter_name.equals("")){
+                System.out.println("查无此章节");
+                return null;
+            }
+            returnObject.put("chapterName",chapter_name);
+            String contentStr=document.body().select("#content").text();
+            String adStr=document.body().select("#content>p").text();
+            if(contentStr!=null&&!contentStr.isEmpty()){
+                String valueStr=contentStr.replace(adStr,"");
+                returnObject.put("chapterContent",valueStr);
+            }
+            return returnObject;
+        } catch (MalformedURLException e) {
+            System.out.println("生成URL对象失败");
+            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("jsoup 爬取超时");
+            e.printStackTrace();
+
+        }
         return null;
     }
 
@@ -159,7 +179,7 @@ public class Source1 implements BQGSourceImp {
         }
         Connection.Response response = null;
         try {
-            response = Jsoup.connect(URL+imgUrl)
+            response = Jsoup.connect(imgUrl)
                     .method(Connection.Method.GET)
                     .headers(getHeaders())
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36")
@@ -200,18 +220,7 @@ public class Source1 implements BQGSourceImp {
 
     private static Map getHeaders(){
         Map<String, String> header = new HashMap<String, String>();
-        header.put("authority","www.biqudu.net");
         header.put("method","GET");
-        header.put("scheme","https");
-        header.put("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
-        header.put("accept-language", "zh-CN,zh;q=0.9,en;q=0.8");
-        header.put("cookie", "obj=1");
-        header.put("accept-encoding", "gzip, deflate, br");
-        header.put("sec-fetch-dest","document");
-        header.put("sec-fetch-mode","navigate");
-        header.put("sec-fetch-site","same-origin");
-        header.put("sec-fetch-user","?1");
-        header.put("upgrade-insecure-requests","1");
         return header;
     }
 }

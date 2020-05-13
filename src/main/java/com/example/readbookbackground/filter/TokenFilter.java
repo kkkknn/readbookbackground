@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Enumeration;
 
 @Component
 @WebFilter(urlPatterns = { "/*" }, filterName = "tokenFilter")
@@ -43,37 +44,41 @@ public class TokenFilter implements Filter {
         servletResponse.setCharacterEncoding("UTF-8");
         servletResponse.setContentType("application/json; charset=utf-8");
         String token = req.getHeader("token");//header方式
-        boolean isFilter = false;
+        String idStr=req.getHeader("accountId");
+        boolean isFilter ;
 
         String method = ((HttpServletRequest) servletRequest).getMethod();
         if (method.equals("OPTIONS")) {
             rep.setStatus(HttpServletResponse.SC_OK);
         }else{
-            if (null == token || token.isEmpty()) {
+            if (null == token || token.isEmpty()||idStr==null||idStr.isEmpty()) {
                 String ss=((HttpServletRequest) servletRequest).getServletPath();
                 if("/User/Login".equals(ss)){
                     isFilter=true;
                 }else{
                     //用户授权认证没有通过!客户端请求参数中无token信息
-                    System.out.println("token为空"+method+"||"+ss);
                     JSONObject jsonObject=new JSONObject();
                     jsonObject.put("code","error");
-                    jsonObject.put("data","请求中无token信息");
+                    jsonObject.put("data","请求中无token信息/用户信息，请求失败");
                     servletResponse.getWriter().print(jsonObject.toJSONString());
                     isFilter=false;
                 }
             } else {
                 //获取用户id
-                String idStr=((HttpServletRequest) servletRequest).getHeader("accountName");
                 //开始认证token和用户id
                 String token2=(String) redisService.get("token_"+idStr);
                 isFilter=token.equals(token2);
+                System.out.println("验证结果"+isFilter+"||"+token+"|"+token2);
             }
-
             //根据结果决定是否放行
             if (isFilter) {
                 System.out.println("token验证成功，放行");
                 filterChain.doFilter(servletRequest,servletResponse);
+            }else {
+                JSONObject jsonObject=new JSONObject();
+                jsonObject.put("code","error");
+                jsonObject.put("data","令牌验证失败，请重新尝试");
+                servletResponse.getWriter().print(jsonObject.toJSONString());
             }
         }
 

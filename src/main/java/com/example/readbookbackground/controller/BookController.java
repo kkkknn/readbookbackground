@@ -45,12 +45,33 @@ public class BookController {
         return getResponseJSON(retObject).toString();
     }
 
+
     @ResponseBody
-    @RequestMapping("/AddLikeBook")
-    public String addLikeBook(String accountName,String bookUrl,int mode){
+    @RequestMapping("/AddFavoriteBook")
+    public String addFavoriteBook(int accountId,String bookUrl,int mode){
         //添加相关图书到数据库中，并返回是否成功
-        boolean flag=bookService.
-        return "";
+        boolean flag=bookService.addFavoriteBook(accountId,bookUrl,mode);
+        JSONObject retObject=new JSONObject();
+        if(flag){
+            retObject.put("code","success");
+            retObject.put("data",bookUrl+"添加成功!");
+            return retObject.toString();
+
+        }else {
+            retObject.put("code", "error");
+            retObject.put("data", "错误原因");
+            return retObject.toString();
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping("/GetChapter")
+    public String getChapter(String chapterUrl,int mode){
+        if(chapterUrl==null||chapterUrl.equals("")){
+            return null;
+        }
+        JSONObject retObject=bookService.getChapter(chapterUrl,mode);
+        return getResponseJSON(retObject).toString();
     }
 
     //打包下载图书文件
