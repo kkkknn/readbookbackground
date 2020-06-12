@@ -3,6 +3,8 @@ package com.example.readbookbackground.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.example.readbookbackground.service.BookService;
 import com.example.readbookbackground.util.redis.RedisService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -70,15 +72,10 @@ public class BookController {
         if(chapterUrl==null||chapterUrl.equals("")){
             return null;
         }
+        Logger logger=LoggerFactory.getLogger(BookController.class);
+        logger.error("测试11111");
         JSONObject retObject=bookService.getChapter(chapterUrl,mode);
         return getResponseJSON(retObject).toString();
-    }
-
-    //打包下载图书文件
-    @ResponseBody
-    @RequestMapping("/DownloadBook")
-    public String downloadBook(){
-        return null;
     }
 
 
