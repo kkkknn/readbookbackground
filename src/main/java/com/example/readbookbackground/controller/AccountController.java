@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 * 3. 注销，手动删除token
 * */
 @Controller
-@RequestMapping("/User")
+@RequestMapping("/Account")
 public class AccountController {
     private final AccountService accountService;
 
@@ -25,36 +25,23 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-
     @ResponseBody
     @RequestMapping("/Login")
-    public JSONObject Login(String str){
-        JSONObject object= JSON.parseObject(str);
-        String name=object.getString("userName");
-        String password=object.getString("userPassword");
-        if(name==null||password==null||name.equals("")||password.equals("")){
+    public JSONObject Login(String  accountName,String accountPassword ){
+        if(accountName==null||accountPassword==null||accountName.equals("")||accountPassword.equals("")){
             JSONObject jsonObject=new JSONObject();
             jsonObject.put("code", "error");
             jsonObject.put("data", "用户名/密码为空");
             return jsonObject;
         }
-        return accountService.userLogin(name,password);
+        return accountService.userLogin(accountName,accountPassword);
     }
 
     @ResponseBody
     @RequestMapping("/Register")
-    public JSONObject Register(String str){
-        if(str==null){
-            JSONObject jsonObject=new JSONObject();
-            jsonObject.put("code", "error");
-            jsonObject.put("data", "用户信息为空");
-            return jsonObject;
-        }
-        JSONObject object= JSON.parseObject(str);
-        String name=object.getString("userName");
-        String password=object.getString("userPassword");
-        if(name!=null&&password!=null&&!name.equals("")&&!password.equals("")){
-            boolean result=accountService.userRegister(name,password);
+    public JSONObject Register(String accountName,String accountPassword){
+        if(accountName!=null&&accountPassword!=null&&!accountName.equals("")&&!accountPassword.equals("")){
+            boolean result=accountService.userRegister(accountName,accountPassword);
             JSONObject jsonObject=new JSONObject();
             if(result){
                 jsonObject.put("code","success");

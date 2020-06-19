@@ -53,7 +53,8 @@ public class TokenFilter implements Filter {
         }else{
             if (null == token || token.isEmpty()||idStr==null||idStr.isEmpty()) {
                 String ss=((HttpServletRequest) servletRequest).getServletPath();
-                if("/User/Login".equals(ss)){
+                System.out.println(ss);
+                if("/Account/Login".equals(ss)){
                     isFilter=true;
                 }else{
                     //用户授权认证没有通过!客户端请求参数中无token信息
