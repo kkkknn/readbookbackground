@@ -2,9 +2,6 @@ package com.example.readbookbackground.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.readbookbackground.service.BookService;
-import com.example.readbookbackground.util.redis.RedisService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,8 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * 主要分为以下几个接口
  * 1. 搜索，查询几个平台并返回搜索结果，
  * 2. 收藏，根据搜索结果把相应需要收藏追更的图书进行存储记录
- * 3. 缓存下载，下载收藏的图书，（由于爬取的原因，当前收藏完不能直接进行缓存）
- * 4. 书籍详情（暂时不加）
+ * 4. 书籍详情
  * */
 
 @RequestMapping("/Book")
@@ -72,8 +68,6 @@ public class BookController {
         if(chapterUrl==null||chapterUrl.equals("")){
             return null;
         }
-        Logger logger=LoggerFactory.getLogger(BookController.class);
-        logger.error("测试11111");
         JSONObject retObject=bookService.getChapter(chapterUrl,mode);
         return getResponseJSON(retObject).toString();
     }
