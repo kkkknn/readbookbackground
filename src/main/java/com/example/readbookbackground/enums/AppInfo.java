@@ -1,28 +1,26 @@
 package com.example.readbookbackground.enums;
 
-import java.sql.Date;
 
 public class AppInfo {
-    private int app_id;
-    private String app_name;
+    private int app_version_id;
+    private String app_update_log;
     private String app_path;
-    private String app_log;
-    private Date app_update_time;
+    private String app_update_time;
 
-    public int getApp_id() {
-        return app_id;
+    public int getApp_version_id() {
+        return app_version_id;
     }
 
-    public void setApp_id(int app_id) {
-        this.app_id = app_id;
+    public void setApp_version_id(int app_version_id) {
+        this.app_version_id = app_version_id;
     }
 
-    public String getApp_name() {
-        return app_name;
+    public String getApp_update_log() {
+        return app_update_log;
     }
 
-    public void setApp_name(String app_name) {
-        this.app_name = app_name;
+    public void setApp_update_log(String app_update_log) {
+        this.app_update_log = app_update_log;
     }
 
     public String getApp_path() {
@@ -33,30 +31,11 @@ public class AppInfo {
         this.app_path = app_path;
     }
 
-    public String getApp_log() {
-        return app_log;
-    }
-
-    public void setApp_log(String app_log) {
-        this.app_log = app_log;
-    }
-
-    public Date getApp_update_time() {
+    public String getApp_update_time() {
         return app_update_time;
     }
 
-    public void setApp_update_time(Date app_update_time) {
+    public void setApp_update_time(String app_update_time) {
         this.app_update_time = app_update_time;
-    }
-
-    @Override
-    public String toString() {
-        return "AppInfo{" +
-                "app_id=" + app_id +
-                ", app_name='" + app_name + '\'' +
-                ", app_path='" + app_path + '\'' +
-                ", app_log='" + app_log + '\'' +
-                ", app_update_time=" + app_update_time +
-                '}';
     }
 }

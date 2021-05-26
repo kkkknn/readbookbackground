@@ -29,6 +29,7 @@ public class BookController {
         if(str==null||str.equals("")){
             return null;
         }
+        //根据图书名字查询，根据作者名字查询
         JSONObject retObject=bookService.searchBook(str,mode,page);
         return getResponseJSON(retObject).toString();
     }

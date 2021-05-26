@@ -4,9 +4,9 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    password: Yqh19970717
-    username: root
-    url: jdbc:mysql://123.56.6.157:3306/testSQL?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=true
+    password: 123456
+    username: yqh
+    url: jdbc:mysql://81.70.239.217:3306/testSQL?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=true
   redis:
     database: 0
     host: 127.0.0.1

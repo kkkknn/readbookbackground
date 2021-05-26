@@ -30,12 +30,5 @@ public class AccountInfo {
         this.account_password = account_password;
     }
 
-    @Override
-    public String toString() {
-        return "AccountInfo{" +
-                "account_id=" + account_id +
-                ", account_name='" + account_name + '\'' +
-                ", account_password='" + account_password +
-                '}';
-    }
+
 }

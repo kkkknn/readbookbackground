@@ -25,7 +25,7 @@ public class AccountService {
             return false;
         }
         //查询是否用户名重复
-        AccountInfo accountInfo=accountMapper.selectUser(username);
+        AccountInfo accountInfo=accountMapper.checkUser(username);
         if(accountInfo!=null){
             System.out.println("用户名重复");
             return false;
@@ -45,7 +45,7 @@ public class AccountService {
         }
         //进行MD5加密并生成token令牌
         String token= UUID.randomUUID().toString().replace("-","");
-        //在redis中保存,7天有效,以用户name为key
+        //在redis中保存,7天有效,以用户id为key
         String key="token_"+accountInfo.getAccount_id();
         if(redisService.set(key,token,604800)){
             jsonObject.put("code","success");

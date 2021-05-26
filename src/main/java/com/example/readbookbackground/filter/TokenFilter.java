@@ -12,7 +12,6 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Enumeration;
 
 @Component
 @WebFilter(urlPatterns = { "/*" }, filterName = "tokenFilter")
@@ -54,7 +53,7 @@ public class TokenFilter implements Filter {
             if (null == token || token.isEmpty()||idStr==null||idStr.isEmpty()) {
                 String ss=((HttpServletRequest) servletRequest).getServletPath();
                 System.out.println(ss);
-                if("/Account/Login".equals(ss)){
+                if("/account/login".equals(ss)||"/account/register".equals(ss)){
                     isFilter=true;
                 }else{
                     //用户授权认证没有通过!客户端请求参数中无token信息

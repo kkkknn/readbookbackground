@@ -1,8 +1,6 @@
 package com.example.readbookbackground.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.example.readbookbackground.enums.AccountInfo;
 import com.example.readbookbackground.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 * 3. 注销，手动删除token
 * */
 @Controller
-@RequestMapping("/Account")
+@RequestMapping("/account")
 public class AccountController {
     private final AccountService accountService;
 
@@ -26,7 +24,7 @@ public class AccountController {
     }
 
     @ResponseBody
-    @RequestMapping("/Login")
+    @RequestMapping("/login")
     public JSONObject Login(String  accountName,String accountPassword ){
         if(accountName==null||accountPassword==null||accountName.equals("")||accountPassword.equals("")){
             JSONObject jsonObject=new JSONObject();
@@ -38,7 +36,7 @@ public class AccountController {
     }
 
     @ResponseBody
-    @RequestMapping("/Register")
+    @RequestMapping("/register")
     public JSONObject Register(String accountName,String accountPassword){
         if(accountName!=null&&accountPassword!=null&&!accountName.equals("")&&!accountPassword.equals("")){
             boolean result=accountService.userRegister(accountName,accountPassword);

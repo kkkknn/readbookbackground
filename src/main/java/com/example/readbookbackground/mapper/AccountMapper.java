@@ -10,17 +10,14 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AccountMapper {
 
-    @Insert("Insert into accountInfo(account_name,account_password) VALUES (#{account_name},#{account_password})")
-    int insertUser(@Param("account_name")String name,@Param("account_password")String password);
+    @Insert("Insert into account_info(account_name,account_password) VALUES (#{accountName},#{accountPassword})")
+    int insertUser(@Param("accountName")String name,@Param("accountPassword")String password);
 
-    @Select("SELECT * FROM accountInfo where account_name = #{accountName}")
-    AccountInfo selectUser(@Param("accountName")String name);
+    @Select("SELECT account_id FROM account_info where account_name = #{accountName}")
+    AccountInfo checkUser(@Param("accountName")String name);
     
-    @Select("SELECT * FROM accountInfo where account_name = #{accountName} and account_password = #{accountPassword}")
+    @Select("SELECT account_id FROM account_info where account_name = #{accountName} and account_password = #{accountPassword}")
     AccountInfo loginUser(@Param("accountName")String name,@Param("accountPassword")String password);
-
-    @Update("UPDATE accountInfo SET account_name=#{account_name} , account_password=#{account_password} WHERE account_id = #{account_id}")
-    int updateUser(AccountInfo user);
 
 
 }
