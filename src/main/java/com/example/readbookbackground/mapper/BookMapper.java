@@ -4,6 +4,8 @@ import com.example.readbookbackground.enums.BookInfo;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+
 @Mapper
 @Repository
 public interface BookMapper {
@@ -22,5 +24,8 @@ public interface BookMapper {
 
     @Select("SELECT * FROM book_info where book_name=#{bookName} AND book_author_name=#{book_authorName}")
     BookInfo checkBookInfo(@Param("bookName")String bookName,@Param("book_authorName")String bookAuthorName);
+
+    @Select("SELECT * FROM book_info where book_name like #{bookName} limit #{page_start} #{count}")
+    ArrayList<BookInfo> selectBook(@Param("bookName")String str,@Param("page_start")int page_start,@Param("count")int count);
 
 }

@@ -17,8 +17,11 @@ public class BookService {
         this.bookMapper = bookMapper;
     }
 
-    public JSONObject searchBook(String str,int mode,int page){
-
+    public JSONObject searchBook(String str,int page_index,int count){
+        if(page_index<0){
+            return null;
+        }
+        bookMapper.selectBook(str,page_index*count,count);
         return null;
     }
 
