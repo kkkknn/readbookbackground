@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.readbookbackground.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -24,36 +25,49 @@ public class AccountController {
     }
 
     @ResponseBody
-    @RequestMapping("/login")
-    public JSONObject Login(String  accountName,String accountPassword ){
+    @PostMapping("/login")
+    public String Login(String accountName,String accountPassword ){
+        JSONObject jsonObject=new JSONObject();
         if(accountName==null||accountPassword==null||accountName.equals("")||accountPassword.equals("")){
-            JSONObject jsonObject=new JSONObject();
             jsonObject.put("code", "error");
-            jsonObject.put("data", "用户名/密码为空");
-            return jsonObject;
+            jsonObject.put("data", "参数错误");
+        }else {
+            String result=accountService.userLogin(accountName,accountPassword);
+            if(result!=null&&!result.isEmpty()){
+                jsonObject.put("code", "success");
+                jsonObject.put("data",result);
+            }else{
+                jsonObject.put("code", "error");
+                jsonObject.put("data", "登录错误，请检查用户名/密码是否正确");
+            }
         }
-        return accountService.userLogin(accountName,accountPassword);
+        return jsonObject.toJSONString();
     }
 
     @ResponseBody
-    @RequestMapping("/register")
-    public JSONObject Register(String accountName,String accountPassword){
-        if(accountName!=null&&accountPassword!=null&&!accountName.equals("")&&!accountPassword.equals("")){
-            boolean result=accountService.userRegister(accountName,accountPassword);
-            JSONObject jsonObject=new JSONObject();
-            if(result){
-                jsonObject.put("code","success");
-
-                jsonObject.put("data","Register 成功");
-                return jsonObject;
-            }else{
-                jsonObject.put("code","error");
-                jsonObject.put("data","error 原因");
-                return jsonObject;
+    @PostMapping("/register")
+    public String Register(String accountName,String accountPassword){
+        JSONObject jsonObject=new JSONObject();
+        if(accountName!=null&&accountPassword!=null&&!accountName.isEmpty()&&!accountPassword.isEmpty()){
+            int result=accountService.userRegister(accountName,accountPassword);
+            switch (result){
+                case 0:
+                    jsonObject.put("code","error");
+                    jsonObject.put("data","用户名重复/密码不符合规范");
+                    break;
+                case 1:
+                    jsonObject.put("code","success");
+                    break;
+                case -1:
+                    jsonObject.put("code","error");
+                    jsonObject.put("data","注册失败/请联系网站管理员");
+                    break;
             }
+        }else {
+            jsonObject.put("code","error");
+            jsonObject.put("data","参数错误");
         }
-        System.out.println("数据为空");
-        return  null;
+        return  jsonObject.toJSONString();
     }
 
 }
