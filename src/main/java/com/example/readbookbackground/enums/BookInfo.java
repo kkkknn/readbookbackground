@@ -10,7 +10,17 @@ public class BookInfo {
     private String author_name;
     private String book_url;
     private int book_chapter_sum;
+    private String source_name;
     private String book_near_chapter_name;
+
+    public String getSource_name() {
+        return source_name;
+    }
+
+    public void setSource_name(String source_name) {
+        this.source_name = source_name;
+    }
+
 
     public int getBook_id() {
         return book_id;
@@ -66,5 +76,19 @@ public class BookInfo {
 
     public void setBook_near_chapter_name(String book_near_chapter_name) {
         this.book_near_chapter_name = book_near_chapter_name;
+    }
+
+    @Override
+    public String toString() {
+        return "BookInfo{" +
+                "book_id=" + book_id +
+                ", book_name='" + book_name + '\'' +
+                ", book_img_url='" + book_img_url + '\'' +
+                ", author_name='" + author_name + '\'' +
+                ", book_url='" + book_url + '\'' +
+                ", book_chapter_sum=" + book_chapter_sum +
+                ", source_name='" + source_name + '\'' +
+                ", book_near_chapter_name='" + book_near_chapter_name + '\'' +
+                '}';
     }
 }

@@ -22,8 +22,8 @@ public interface BookMapper {
     @Select("SELECT * FROM book_info where book_id = #{bookId}")
     BookInfo getBookInfo(@Param("bookId")int bookId);
 
-    @Select("SELECT * FROM book_info where book_name=#{bookName} AND book_author_name=#{book_authorName}")
-    BookInfo checkBookInfo(@Param("bookName")String bookName,@Param("book_authorName")String bookAuthorName);
+    @Select("SELECT * FROM book_info where book_name=#{bookName} AND book_author_name=#{book_authorName} AND source_name=#{source_name}")
+    BookInfo checkBookInfo(@Param("bookName")String bookName,@Param("book_authorName")String bookAuthorName,@Param("source_name")String source_name);
 
     @Select("SELECT * FROM book_info where book_name like #{bookName} limit #{page_start} #{count}")
     ArrayList<BookInfo> selectBook(@Param("bookName")String str,@Param("page_start")int page_start,@Param("count")int count);

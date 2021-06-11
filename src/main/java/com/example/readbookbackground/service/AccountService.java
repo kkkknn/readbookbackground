@@ -22,7 +22,7 @@ public class AccountService {
 
     public int userRegister(String username,String password){
         /**
-         *用户名/密码 规则验证 防止SQL注入
+         *用户名/密码 规则验证
          * 用户名 20字符限制 仅允许数字+英文组合
          * 密码  由于是MD5密文  仅需验证是否为MD5字符串即可
          */
@@ -42,7 +42,7 @@ public class AccountService {
 
     public String userLogin(String username, String password){
         /**
-         *用户名/密码 规则验证 防止SQL注入
+         *用户名/密码 规则验证
          * 用户名 20字符限制 仅允许数字+英文组合
          * 密码  由于是MD5密文  仅需验证是否为MD5字符串即可
          */

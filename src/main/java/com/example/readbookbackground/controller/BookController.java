@@ -3,6 +3,7 @@ package com.example.readbookbackground.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.example.readbookbackground.enums.BookInfo;
 import com.example.readbookbackground.service.BookService;
+import com.example.readbookbackground.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,34 +25,48 @@ public class BookController {
     @ResponseBody
     @RequestMapping("/searchBook")
     public String searchBook(String str,int pageCount,int pageSize){
-        //todo:返回json字符串
-        if(str==null||str.equals("")){
-            return null;
+        JSONObject jsonObject=new JSONObject();
+        if(!StringUtil.containsSqlInjection(str)){
+            jsonObject.put("code","error");
+            jsonObject.put("data","搜索关键字不符合规范");
+        }else {
+            //根据图书名字查询，根据作者名字查询 每页10条数据 返回
+            ArrayList<BookInfo> arrayList =bookService.searchBook(str,pageCount,pageSize);
+            if(arrayList.size()>0){
+                jsonObject.put("code","success");
+                jsonObject.put("data",arrayList.toString());
+                System.out.println("测试输出:"+arrayList.toString());
+            }
         }
-        //根据图书名字查询，根据作者名字查询 每页10条数据 返回
-        ArrayList<BookInfo> arrayList =bookService.searchBook(str,pageCount,pageSize);
-        return arrayList.toString();
+        return jsonObject.toString();
     }
 
     @ResponseBody
     @RequestMapping("/getBookInfo")
-    public String getBookInfo(String bookUrl,int mode){
+    public String getBookInfo(int bookId){
         //只返回当前章节数量，最新章节名称及更新日期 以及其他图书信息
-        if(bookUrl==null||bookUrl.equals("")){
-            return null;
+        JSONObject jsonObject=new JSONObject();
+        if(bookId==0){
+            jsonObject.put("code","error");
+            jsonObject.put("data","搜索关键字不符合规范");
+        }else {
+            BookInfo bookInfo=bookService.getBookInfo(bookId);
+            if(bookInfo!=null){
+                jsonObject.put("code","success");
+                jsonObject.put("data",bookInfo);
+            }
         }
-        JSONObject retObject=bookService.getBookInfo(bookUrl,mode);
-        return getResponseJSON(retObject).toString();
+        return jsonObject.toString();
     }
 
     @ResponseBody
     @RequestMapping("/getChapterList")
-    public String getBookInfo(int bookId,int pageCount,int pageSize){
+    public String getChapterList(int bookId,int pageCount,int pageSize){
         //只返回当前章节数量，最新章节名称及更新日期 以及其他图书信息
         if(bookId<=0){
             return null;
         }
-        JSONObject retObject=bookService.getBookInfo("1",2);
+        JSONObject retObject=bookService.getChapterList(bookId,pageCount,pageSize);
         return getResponseJSON(retObject).toString();
     }
 
@@ -78,7 +93,7 @@ public class BookController {
     @RequestMapping("/removeFavoriteBook")
     public String removeFavoriteBook(int accountId,int bookId){
         //添加相关图书到数据库中，并返回是否成功
-        boolean flag=bookService.addFavoriteBook(accountId,"bookUrl",2);
+        boolean flag=bookService.removeFavoriteBook(accountId,"bookUrl",2);
         JSONObject retObject=new JSONObject();
         if(flag){
             retObject.put("code","success");

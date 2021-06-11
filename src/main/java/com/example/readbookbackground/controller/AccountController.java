@@ -2,6 +2,7 @@ package com.example.readbookbackground.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.readbookbackground.service.AccountService;
+import com.example.readbookbackground.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +29,8 @@ public class AccountController {
     @PostMapping("/login")
     public String Login(String accountName,String accountPassword ){
         JSONObject jsonObject=new JSONObject();
-        if(accountName==null||accountPassword==null||accountName.equals("")||accountPassword.equals("")){
+        //防止SQL注入
+        if(!StringUtil.containsSqlInjection(accountName)||!StringUtil.containsSqlInjection(accountPassword)){
             jsonObject.put("code", "error");
             jsonObject.put("data", "参数错误");
         }else {
@@ -48,7 +50,7 @@ public class AccountController {
     @PostMapping("/register")
     public String Register(String accountName,String accountPassword){
         JSONObject jsonObject=new JSONObject();
-        if(accountName!=null&&accountPassword!=null&&!accountName.isEmpty()&&!accountPassword.isEmpty()){
+        if(!StringUtil.containsSqlInjection(accountName)||!StringUtil.containsSqlInjection(accountPassword)){
             int result=accountService.userRegister(accountName,accountPassword);
             switch (result){
                 case 0:
