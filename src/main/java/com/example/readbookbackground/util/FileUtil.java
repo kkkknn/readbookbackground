@@ -39,7 +39,7 @@ public class FileUtil {
                                 stringBuilder.append(tempString);
                             }
                             //String s=new String(stringBuilder.toString().getBytes("GBK"),"UTF-8");
-                            String[] values=stringBuilder.toString().replace("\"","").replace(" ","\\u3000").split(",");
+                            String[] values=stringBuilder.toString().replace("\"","").split(",");
                             System.out.println(stringBuilder.toString());
                             for (String str:values) {
                                 System.out.println(str);
@@ -47,16 +47,24 @@ public class FileUtil {
                                 for (int i = 0; i < arr.length; i+=2) {
                                     switch (arr[i]){
                                         case "book_name":
-                                            bookInfo.setBook_name(StringUtil.unicodeToCn(arr[i+1]));
+                                            bookInfo.setBook_name(arr[i+1]);
+                                            System.out.println(1111+arr[i+1]);
                                             break;
                                         case "author_name":
-                                            bookInfo.setAuthor_name(StringUtil.unicodeToCn(arr[i+1]));
+                                            bookInfo.setAuthor_name(arr[i+1]);
+                                            System.out.println(222222222+arr[i+1]);
                                             break;
                                         case "source_name":
                                             bookInfo.setSource_name(arr[i+1]);
+                                            System.out.println(33333+arr[i+1]);
                                             break;
                                         case "near_chapter_name":
-                                            bookInfo.setBook_near_chapter_name(StringUtil.unicodeToCn(arr[i+1]));
+                                            //此处读取的info.json文件，并不是实际保存的最新章节，所以不写入
+                                            //bookInfo.setBook_near_chapter_name(StringUtil.unicodeToCn(arr[i+1]));
+                                            break;
+                                        case "book_about":
+                                            bookInfo.setBook_about(arr[i+1]);
+                                            System.out.println(444444+arr[i+1]);
                                             break;
                                         default:
                                             System.out.println("没找到");
@@ -78,6 +86,7 @@ public class FileUtil {
                 }
             }
         }
+        System.out.println(bookInfo);
         return bookInfo;
     }
 

@@ -63,13 +63,32 @@ public class BookService {
         return false;
     }
 
-    public boolean addBookInfo(BookInfo bookInfo){
-        return false;
+    public BookInfo addBookInfo(BookInfo bookInfo){
+        //添加图书详情，并写入成功后的bookID
+        int id=bookMapper.insertBook(bookInfo);
+        System.out.println(id);
+        bookInfo.setBook_id(id);
+        return bookInfo;
     }
 
+    /**
+     * 章节表添加图书章节 添加之后动态增加图书表的总章节数量
+     * @param bookId
+     * @param chapterName
+     * @param chapterPath
+     * @return
+     */
     public boolean addChapter(int bookId,String chapterName,String chapterPath){
-        return false;
+
+        int val=bookMapper.insertChapter(bookId,chapterName,chapterPath);
+        System.out.println("添加详情："+val);
+
+
+        return val>0;
     }
 
 
+    public boolean updateChapterSum(int book_id, int sum,String near_chapter_name) {
+        return bookMapper.updateChapterSum(book_id,sum,near_chapter_name)==1;
+    }
 }

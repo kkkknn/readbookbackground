@@ -12,6 +12,7 @@ public class BookInfo {
     private int book_chapter_sum;
     private String source_name;
     private String book_near_chapter_name;
+    private String book_about;
 
     public String getSource_name() {
         return source_name;
@@ -78,6 +79,16 @@ public class BookInfo {
         this.book_near_chapter_name = book_near_chapter_name;
     }
 
+
+
+    public String getBook_about() {
+        return book_about;
+    }
+
+    public void setBook_about(String book_about) {
+        this.book_about = book_about;
+    }
+
     @Override
     public String toString() {
         return "BookInfo{" +
@@ -89,6 +100,7 @@ public class BookInfo {
                 ", book_chapter_sum=" + book_chapter_sum +
                 ", source_name='" + source_name + '\'' +
                 ", book_near_chapter_name='" + book_near_chapter_name + '\'' +
+                ", book_about='" + book_about + '\'' +
                 '}';
     }
 }
