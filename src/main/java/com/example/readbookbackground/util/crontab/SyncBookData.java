@@ -3,7 +3,6 @@ package com.example.readbookbackground.util.crontab;
 import com.example.readbookbackground.enums.BookInfo;
 import com.example.readbookbackground.service.BookService;
 import com.example.readbookbackground.util.FileUtil;
-import com.example.readbookbackground.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -69,7 +68,7 @@ public class SyncBookData {
                             System.out.println(val);
                             if(val>0){
                                 //数据库存储完成后，更新最新章节及总章节
-                                boolean flag=bookService.updateChapterSum(ret_bookInfo.getBook_id(),val,ret_bookInfo.getBook_near_chapter_name());
+                                boolean flag=bookService.updateChapterSum(ret_bookInfo.getBook_id(),val,ret_bookInfo.getBook_near_chapter());
                                 System.out.println("更新结果："+flag);
                             }
                         }
@@ -82,7 +81,7 @@ public class SyncBookData {
                             System.out.println(sum);
                             if(sum>0){
                                 //数据库存储完成后，更新最新章节及总章节
-                                boolean flag=bookService.updateChapterSum(val_bookInfo.getBook_id(),sum,val_bookInfo.getBook_near_chapter_name());
+                                boolean flag=bookService.updateChapterSum(val_bookInfo.getBook_id(),sum,val_bookInfo.getBook_near_chapter());
                                 System.out.println("更新结果："+flag);
                             }
 
@@ -93,6 +92,7 @@ public class SyncBookData {
         }
         System.err.println("执行静态定时任务时间: " + LocalDateTime.now());
     }
+
 
     /**
      * 添加章节信息到数据库当中

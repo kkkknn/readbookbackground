@@ -1,8 +1,6 @@
 package com.example.readbookbackground.enums;
 
 
-import java.sql.Timestamp;
-
 public class BookInfo {
     private int book_id;
     private String book_name;
@@ -11,7 +9,7 @@ public class BookInfo {
     private String book_url;
     private int book_chapter_sum;
     private String source_name;
-    private String book_near_chapter_name;
+    private String book_near_chapter;
     private String book_about;
 
     public String getSource_name() {
@@ -71,12 +69,12 @@ public class BookInfo {
         this.book_chapter_sum = book_chapter_sum;
     }
 
-    public String getBook_near_chapter_name() {
-        return book_near_chapter_name;
+    public String getBook_near_chapter() {
+        return book_near_chapter;
     }
 
-    public void setBook_near_chapter_name(String book_near_chapter_name) {
-        this.book_near_chapter_name = book_near_chapter_name;
+    public void setBook_near_chapter(String book_near_chapter) {
+        this.book_near_chapter = book_near_chapter;
     }
 
 
@@ -99,7 +97,7 @@ public class BookInfo {
                 ", book_url='" + book_url + '\'' +
                 ", book_chapter_sum=" + book_chapter_sum +
                 ", source_name='" + source_name + '\'' +
-                ", book_near_chapter_name='" + book_near_chapter_name + '\'' +
+                ", book_near_chapter='" + book_near_chapter + '\'' +
                 ", book_about='" + book_about + '\'' +
                 '}';
     }

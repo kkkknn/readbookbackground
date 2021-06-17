@@ -12,7 +12,7 @@ public class StringUtil {
         }
         Pattern pattern= Pattern.compile("\\b(and|exec|insert|select|drop|grant|alter|delete|update|count|chr|mid|master|truncate|char|declare|or)\\b|(\\*|;|\\+|'|%)");
         Matcher matcher=pattern.matcher(str.toLowerCase());
-        return matcher.find();
+        return !matcher.find();
     }
 
     //Unicode转中文方法

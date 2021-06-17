@@ -60,7 +60,7 @@ public class FileUtil {
                                             break;
                                         case "near_chapter_name":
                                             //此处读取的info.json文件，并不是实际保存的最新章节，所以不写入
-                                            //bookInfo.setBook_near_chapter_name(StringUtil.unicodeToCn(arr[i+1]));
+                                            //bookInfo.setBook_near_chapter(StringUtil.unicodeToCn(arr[i+1]));
                                             break;
                                         case "book_about":
                                             bookInfo.setBook_about(arr[i+1]);
@@ -119,7 +119,9 @@ public class FileUtil {
             for (File file:files) {
                 //循环写入文件章节列表
                 String[] arr=new String[2];
-                arr[0]=file.getName();
+                String fileName=file.getName();
+                //去除文件名称后缀
+                arr[0]=fileName.substring(0,fileName.lastIndexOf("."));
                 arr[1]=file.getPath();
                 chapter_list.add(arr);
             }
