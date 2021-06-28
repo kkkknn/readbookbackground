@@ -47,13 +47,12 @@ public class APPController {
         }
         String type = urlPath.substring(urlPath.lastIndexOf(".") + 1);
         //判断下载类型 xlsx 或 xls 现在只实现了xlsx、xls两个类型的文件下载
-        if (type.equalsIgnoreCase("apk") || type.equalsIgnoreCase("xls")){
+        if (type.equalsIgnoreCase("apk")){
             response.setContentType("text/html;charset=utf-8");
             response.setCharacterEncoding("utf-8");
             InputStream in = null;
             OutputStream out = null;
             try {
-
                 //获取要下载的文件输入流
                 in = new FileInputStream(urlPath);
                 int len = 0;

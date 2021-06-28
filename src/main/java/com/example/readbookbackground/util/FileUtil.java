@@ -165,5 +165,37 @@ public class FileUtil {
         return stringBuffer.toString();
     }
 
+    /**
+     * 获取最新APP信息
+     * @param filePath APP存储目录
+     * @return APP json信息字符串
+     */
+    public static String getNewAppInfo(String filePath){
+        File file=new File(filePath+"info.json");
+        if(!file.exists()){
+            return null;
+        }
+        //按行读取json，并整合为json字符串
+        BufferedReader bufferedReader=null;
+        StringBuilder stringBuilder=new StringBuilder();
+        try {
+            bufferedReader=new BufferedReader(new FileReader(file));
+            String temp=null;
+            while ((temp=bufferedReader.readLine())!=null){
+                stringBuilder.append(temp);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (bufferedReader != null) {
+                    bufferedReader.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return stringBuilder.toString();
+    }
 
 }

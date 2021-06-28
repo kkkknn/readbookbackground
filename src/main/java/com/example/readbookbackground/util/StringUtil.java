@@ -17,7 +17,7 @@ public class StringUtil {
 
     //Unicode转中文方法
     public static String unicodeToCn(String unicode) {
-        /** 以 \ u 分割，因为java注释也能识别unicode，因此中间加了一个空格*/
+        // 以 \ u 分割，因为java注释也能识别unicode，因此中间加了一个空格
         String[] strs = unicode.split("\\\\u");
         String returnStr = "";
         // 由于unicode字符串以 \ u 开头，因此分割出的第一个字符是""。
