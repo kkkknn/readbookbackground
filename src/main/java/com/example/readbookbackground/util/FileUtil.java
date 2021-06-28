@@ -129,4 +129,41 @@ public class FileUtil {
         return chapter_list;
     }
 
+    /**
+     * 从本地目录获取图书章节内容
+     * @param filePath 文件的本地目录
+     * @return
+     */
+    public static String getChapterContent(String filePath){
+        File file=new File(filePath);
+        if(!file.exists()){
+            return null;
+        }
+        StringBuffer stringBuffer=new StringBuffer();
+
+        BufferedReader bufferedReader=null;
+        try {
+            bufferedReader=new BufferedReader(new FileReader(file));
+            String temp_string=null;
+            int line=-1;
+            while ((temp_string=bufferedReader.readLine())!=null){
+                stringBuffer.append(temp_string);
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                if (bufferedReader != null) {
+                    bufferedReader.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return stringBuffer.toString();
+    }
+
+
 }

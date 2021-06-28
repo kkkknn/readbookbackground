@@ -128,31 +128,18 @@ public class BookController {
 
     @ResponseBody
     @RequestMapping("/getChapterContent")
-    public String getChapterContent(String chapterPath){
+    public String getChapterContent(String chapter_path){
         JSONObject jsonObject=new JSONObject();
-        File file=new File(chapterPath);
-        if(!file.exists()){
+        String content=bookService.getChapter(chapter_path);
+        if(content==null){
             jsonObject.put("code","error");
-            jsonObject.put("data","文件路径错误");
+            jsonObject.put("data","读取章节错误");
         }else {
-            //todo 读取本地文件然后将内容放置接送字符串中
-            JSONObject retObject=bookService.getChapter("chapterUrl",2);
+            jsonObject.put("code","success");
+            jsonObject.put("data",content);
         }
-
-        return getResponseJSON(jsonObject).toString();
+        return jsonObject.toString();
     }
 
-    private JSONObject getResponseJSON(JSONObject object){
-        JSONObject retObject=new JSONObject();
-        if(object!=null){
-            retObject.put("code","success");
-            retObject.put("data",object);
-        }else{
-            retObject.put("code","error");
-            retObject.put("data","错误原因");
-        }
-
-        return retObject;
-    }
 
 }

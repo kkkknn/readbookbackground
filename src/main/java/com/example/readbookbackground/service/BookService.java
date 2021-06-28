@@ -6,6 +6,7 @@ import com.example.readbookbackground.enums.ChapterInfo;
 import com.example.readbookbackground.enums.FavoriteInfo;
 import com.example.readbookbackground.mapper.AccountMapper;
 import com.example.readbookbackground.mapper.BookMapper;
+import com.example.readbookbackground.util.FileUtil;
 import com.example.readbookbackground.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,9 +45,8 @@ public class BookService {
         return bookMapper.getBookInfo(bookId);
     }
 
-    public JSONObject getChapter(String url, int mode){
-
-        return null;
+    public String getChapter(String url){
+        return FileUtil.getChapterContent(url);
     }
 
     public ArrayList<ChapterInfo> getChapterList(int bookId,int pageIndex,int pageSize){
