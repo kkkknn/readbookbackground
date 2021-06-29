@@ -91,7 +91,7 @@ public class FileUtil {
     }
 
     /**
-     * 获取图书章节列表
+     * 获取图书章节列表 并按照章节名字排序
      */
     public static ArrayList<String[]> getChapterList(String bookPath){
         ArrayList<String[]> chapter_list=new ArrayList<>();
@@ -102,11 +102,13 @@ public class FileUtil {
             if(files==null){
                 return chapter_list;
             }
-            //章节文件排序
+            //章节文件排序 ,根据分割的章节名字
             Arrays.sort(files, new Comparator<File>() {
                 @Override
                 public int compare(File o1, File o2) {
-                    long diff=o1.lastModified()-o2.lastModified();
+                    int chapter1=Integer.parseInt(o1.getName().split("_")[0]);
+                    int chapter2=Integer.parseInt(o2.getName().split("_")[0]);
+                    long diff=chapter1-chapter2;
                     if(diff>0){
                         return 1;
                     }else if(diff==0){
