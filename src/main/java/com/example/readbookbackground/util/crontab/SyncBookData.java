@@ -16,7 +16,7 @@ import java.util.ArrayList;
 @EnableScheduling
 public class SyncBookData {
     private final BookService bookService;
-    private final static String path="F:\\home\\book_save_dir";
+    private final static String path="F:\\home\\clonebook_application\\books_save";
 
     @Autowired
     public SyncBookData(BookService bookService) {
@@ -50,12 +50,10 @@ public class SyncBookData {
                     continue;
                 }
                 for (File file : book_path) {
-                    System.out.println(file.toPath().toString());
                     //获取图书信息图书名字，作者名字，最新章节名字
                     BookInfo bookInfo = FileUtil.getBookInfo(file.toPath().toString());
                     ArrayList<String[]> list = FileUtil.getChapterList(bookInfo.getBook_url());
                     bookInfo.setBook_chapter_sum(list.size());
-                    System.out.println(bookInfo.toString());
                     //接口获取图书信息
                     BookInfo ret_bookInfo=bookService.checkBook(bookInfo);
                     if(ret_bookInfo!=null){

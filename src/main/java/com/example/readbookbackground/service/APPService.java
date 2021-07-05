@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class APPService {
     //存放APP目录
-    private final String path="/home/android_apps/CloneBook_project/";
+    private final String path="/home/clonebook_application/apk_files/";
 
     public String getVersionInfo(){
         //读取指定文件目录json
