@@ -15,7 +15,7 @@ public interface BookMapper {
     @Insert("Insert into book_info" +
             "(book_name,book_img_url,author_name,book_url,book_near_chapter,book_chapter_sum,book_about,source_name)" +
             " VALUES " +
-            "(#{book_name},#{book_img_url},#{author_name},#{book_url},#{book_near_chapter_name},#{book_chapter_sum},#{book_about},#{source_name})")
+            "(#{book_name},#{book_img_url},#{author_name},#{book_url},#{book_near_chapter},#{book_chapter_sum},#{book_about},#{source_name})")
     @Options(useGeneratedKeys = true,keyProperty = "book_id",keyColumn = "book_id")
     int insertBook(BookInfo info);
 

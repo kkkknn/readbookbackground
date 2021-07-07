@@ -39,7 +39,11 @@ public class FileUtil {
                                 stringBuilder.append(tempString);
                             }
                             //String s=new String(stringBuilder.toString().getBytes("GBK"),"UTF-8");
-                            String[] values=stringBuilder.toString().replace("\"","").split(",");
+                            String[] values=stringBuilder.toString()
+                                    .replace("\"","")
+                                    .replace("}","")
+                                    .replace("{","")
+                                    .split(",");
                             System.out.println(stringBuilder.toString());
                             for (String str:values) {
                                 System.out.println(str);
