@@ -82,8 +82,7 @@ public class BookService {
     public BookInfo addBookInfo(BookInfo bookInfo){
         //添加图书详情，并写入成功后的bookID
         int id=bookMapper.insertBook(bookInfo);
-        System.out.println(id);
-        bookInfo.setBook_id(id);
+        System.out.println(bookInfo.getBook_id());
         return bookInfo;
     }
 
