@@ -63,11 +63,10 @@ public class SyncBookData {
                         //总章节数不一致，添加相关章节路径到数据库
                         if(size>0){
                             int val=updateChapterInfo(ret_bookInfo.getBook_id(),list,ret_bookInfo.getBook_chapter_sum(),size);
-                            System.out.println(val);
                             if(val>0){
                                 //数据库存储完成后，更新最新章节及总章节
                                 boolean flag=bookService.updateChapterSum(ret_bookInfo.getBook_id(),val,ret_bookInfo.getBook_near_chapter());
-                                System.out.println("更新结果："+flag);
+                                System.out.println("图书书名："+bookInfo.getBook_name()+" 更新章节数量："+flag);
                             }
                         }
                     }else{
@@ -76,11 +75,10 @@ public class SyncBookData {
                         //循环添加相关章节到数据库
                         if(val_bookInfo!=null){
                             int sum=updateChapterInfo(val_bookInfo.getBook_id(),list,0,list.size());
-                            System.out.println(sum);
                             if(sum>0){
                                 //数据库存储完成后，更新最新章节及总章节
                                 boolean flag=bookService.updateChapterSum(val_bookInfo.getBook_id(),sum,val_bookInfo.getBook_near_chapter());
-                                System.out.println("更新结果："+flag);
+                                System.out.println("图书书名："+bookInfo.getBook_name()+" 更新章节数量："+flag);
                             }
 
                         }

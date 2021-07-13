@@ -95,7 +95,6 @@ public class BookService {
      */
     public boolean addChapter(int bookId,String chapterName,String chapterPath){
         int val=bookMapper.insertChapter(bookId,chapterName,chapterPath);
-        System.out.println("添加结果："+val);
         return val>0;
     }
 
