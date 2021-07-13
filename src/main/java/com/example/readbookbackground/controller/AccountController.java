@@ -51,6 +51,9 @@ public class AccountController {
     public String Register(String accountName,String accountPassword){
         JSONObject jsonObject=new JSONObject();
         if(!StringUtil.containsSqlInjection(accountName)||!StringUtil.containsSqlInjection(accountPassword)){
+            jsonObject.put("code","error");
+            jsonObject.put("data","参数错误");
+        }else {
             int result=accountService.userRegister(accountName,accountPassword);
             switch (result){
                 case 0:
@@ -65,9 +68,6 @@ public class AccountController {
                     jsonObject.put("data","注册失败/请联系网站管理员");
                     break;
             }
-        }else {
-            jsonObject.put("code","error");
-            jsonObject.put("data","参数错误");
         }
         return  jsonObject.toJSONString();
     }
