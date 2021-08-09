@@ -46,4 +46,8 @@ public interface BookMapper {
 
     @Select("select * from favorite_info where account_id=#{account_id} and book_id=#{book_id}")
     Integer checkFavoriteBook(FavoriteInfo favoriteInfo);
+
+    @Select("SELECT book_info.* FROM book_info,favorite_info WHERE favorite_info.account_id = #{account_id} AND favorite_info.book_id = book_info.book_id")
+    ArrayList<BookInfo> selectFavoriteBook(@Param("account_id")int id);
+
 }

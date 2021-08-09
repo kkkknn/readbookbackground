@@ -141,5 +141,16 @@ public class BookController {
         return jsonObject.toString();
     }
 
+    @ResponseBody
+    @RequestMapping("/getFavoriteBook")
+    public String getFavoriteBook(int accountId){
+        JSONObject retObject=new JSONObject();
+        ArrayList<BookInfo> arrayList =bookService.getFavoriteBook(accountId);
+        if(!arrayList.isEmpty()){
+            retObject.put("code","success");
+            retObject.put("data",arrayList.toString());
+        }
+        return retObject.toString();
+    }
 
 }

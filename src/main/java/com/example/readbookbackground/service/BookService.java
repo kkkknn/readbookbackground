@@ -32,9 +32,9 @@ public class BookService {
 
     public BookInfo checkBook(BookInfo bookInfo){
         if(bookInfo==null
-                || StringUtil.containsSqlInjection(bookInfo.getAuthor_name())
-                || StringUtil.containsSqlInjection(bookInfo.getSource_name())
-                || StringUtil.containsSqlInjection(bookInfo.getBook_name())){
+                ||StringUtil.isEmpty(bookInfo.getBook_name())
+                ||StringUtil.isEmpty(bookInfo.getAuthor_name())
+                ||StringUtil.isEmpty(bookInfo.getSource_name())){
             return null;
         }
         return bookMapper.checkBookInfo(bookInfo.getBook_name(),bookInfo.getAuthor_name(),bookInfo.getSource_name());
@@ -56,6 +56,9 @@ public class BookService {
         return bookMapper.getChapterList(bookId,(pageIndex-1)*pageSize,pageSize);
     }
 
+    public ArrayList<BookInfo> getFavoriteBook(int accountId){
+        return bookMapper.selectFavoriteBook(accountId);
+    }
 
     /**
      * 收藏图书

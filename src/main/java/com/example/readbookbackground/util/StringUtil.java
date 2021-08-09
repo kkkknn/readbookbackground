@@ -26,4 +26,8 @@ public class StringUtil {
         }
         return returnStr;
     }
+
+    public static boolean isEmpty(String str){
+        return str==null||str.isEmpty();
+    }
 }
