@@ -1,5 +1,6 @@
 package com.example.readbookbackground.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.readbookbackground.enums.BookInfo;
 import com.example.readbookbackground.enums.ChapterInfo;
@@ -37,8 +38,10 @@ public class BookController {
             ArrayList<BookInfo> arrayList =bookService.searchBook(str,pageCount,pageSize);
             if(!arrayList.isEmpty()){
                 jsonObject.put("code","success");
-                jsonObject.put("data",arrayList.toString());
-                System.out.println("测试输出:"+arrayList.toString());
+                JSONArray jsonArray=new JSONArray();
+                jsonArray.addAll(arrayList);
+                jsonObject.put("data",jsonArray.toJSONString());
+
             }
         }
         return jsonObject.toString();
@@ -80,8 +83,9 @@ public class BookController {
         ArrayList<ChapterInfo> list=bookService.getChapterList(bookId,pageCount,pageSize);
         if(!list.isEmpty()){
             jsonObject.put("code","success");
-            jsonObject.put("data",list.toString());
-            System.out.println("测试输出:"+list.toString());
+            JSONArray jsonArray=new JSONArray();
+            jsonArray.addAll(list);
+            jsonObject.put("data",jsonArray.toJSONString());
         }else {
             jsonObject.put("code","error");
             jsonObject.put("data","未查询到相关章节");
@@ -148,7 +152,9 @@ public class BookController {
         ArrayList<BookInfo> arrayList =bookService.getFavoriteBook(accountId);
         if(!arrayList.isEmpty()){
             retObject.put("code","success");
-            retObject.put("data",arrayList.toString());
+            JSONArray jsonArray=new JSONArray();
+            jsonArray.addAll(arrayList);
+            retObject.put("data",jsonArray.toJSONString());
         }
         return retObject.toString();
     }
