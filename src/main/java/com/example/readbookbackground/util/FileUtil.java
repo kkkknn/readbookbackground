@@ -1,11 +1,9 @@
 package com.example.readbookbackground.util;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.example.readbookbackground.enums.BookInfo;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -202,6 +200,53 @@ public class FileUtil {
             }
         }
         return stringBuilder.toString();
+    }
+
+    /**
+     * 下载文件
+     * @param response 返回的请求
+     * @param urlPath  文件路径
+     */
+    public static void downloadFile(HttpServletResponse response, String urlPath){
+        File f = new File(urlPath);
+        if (!f.exists()) {
+            try {
+                response.sendError(404, "File not found!");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        response.setContentType("text/html;charset=utf-8");
+        response.setCharacterEncoding("utf-8");
+        InputStream in = null;
+        OutputStream out = null;
+        try {
+            //获取要下载的文件输入流
+            in = new FileInputStream(urlPath);
+            int len = 0;
+            //创建数据缓冲区
+            byte[] buffer = new byte[1024];
+            //通过response对象获取outputStream流
+            out = response.getOutputStream();
+            //将FileInputStream流写入到buffer缓冲区
+            while((len = in.read(buffer)) > 0) {
+                //使用OutputStream将缓冲区的数据输出到浏览器
+                out.write(buffer,0,len);
+            }
+            //这一步走完，将文件传入OutputStream中后，页面就会弹出下载框
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (out != null)
+                    out.close();
+                if(in!=null)
+                    in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

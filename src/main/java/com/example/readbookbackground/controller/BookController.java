@@ -6,13 +6,16 @@ import com.example.readbookbackground.enums.BookInfo;
 import com.example.readbookbackground.enums.ChapterInfo;
 import com.example.readbookbackground.enums.FavoriteInfo;
 import com.example.readbookbackground.service.BookService;
+import com.example.readbookbackground.util.FileUtil;
 import com.example.readbookbackground.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.io.File;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.util.ArrayList;
 
 
@@ -157,6 +160,12 @@ public class BookController {
             retObject.put("data",jsonArray.toJSONString());
         }
         return retObject.toString();
+    }
+
+    @ResponseBody
+    @GetMapping("/downloadBookImage")
+    public void downloadAPK(HttpServletResponse response, String urlPath) {
+        FileUtil.downloadFile(response, urlPath);
     }
 
 }
