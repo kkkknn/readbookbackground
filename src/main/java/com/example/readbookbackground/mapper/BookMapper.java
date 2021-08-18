@@ -1,9 +1,7 @@
 package com.example.readbookbackground.mapper;
 
-import com.alibaba.fastjson.JSONObject;
 import com.example.readbookbackground.enums.BookInfo;
 import com.example.readbookbackground.enums.ChapterInfo;
-import com.example.readbookbackground.enums.FavoriteInfo;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -20,8 +18,7 @@ public interface BookMapper {
     int insertBook(BookInfo info);
 
     @Insert("Insert into favorite_info (account_id,book_id) VALUES (#{account_id},#{book_id})")
-    @Options(useGeneratedKeys = true,keyProperty = "favorite_id",keyColumn = "favorite_id")
-    int insertFavoriteBook(FavoriteInfo favoriteInfo);
+    int insertFavoriteBook(@Param("book_id")int book_id,@Param("account_id")int account_id);
 
     @Select("SELECT * FROM book_info where book_id = #{bookId}")
     BookInfo getBookInfo(@Param("bookId")int bookId);
@@ -45,7 +42,7 @@ public interface BookMapper {
     int deleteFavoriteBook(@Param("favorite_id")int favorite_id);
 
     @Select("select * from favorite_info where account_id=#{account_id} and book_id=#{book_id}")
-    Integer checkFavoriteBook(FavoriteInfo favoriteInfo);
+    Integer checkFavoriteBook(@Param("book_id")int book_id,@Param("account_id")int account_id);
 
     @Select("SELECT book_info.* FROM book_info,favorite_info WHERE favorite_info.account_id = #{account_id} AND favorite_info.book_id = book_info.book_id")
     ArrayList<BookInfo> selectFavoriteBook(@Param("account_id")int id);

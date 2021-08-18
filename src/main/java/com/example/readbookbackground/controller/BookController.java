@@ -99,17 +99,24 @@ public class BookController {
 
     @ResponseBody
     @RequestMapping("/addFavoriteBook")
-    public String addFavoriteBook(FavoriteInfo favoriteInfo){
+    public String addFavoriteBook(int book_id,int account_id){
         JSONObject retObject=new JSONObject();
         //添加相关图书到数据库中，并返回是否成功
-        boolean flag=bookService.addFavoriteBook(favoriteInfo);
-        if(flag){
-            retObject.put("code","success");
-            retObject.put("data","加入收藏成功");
+        int flag=bookService.addFavoriteBook(book_id,account_id);
+        switch (flag){
+            case 0:
+                retObject.put("code", "error");
+                retObject.put("data", "已收藏，请勿重复收藏");
+                break;
+            case -1:
+                retObject.put("code", "error");
+                retObject.put("data", "加入收藏失败");
+                break;
+            case 1:
+                retObject.put("code","success");
+                retObject.put("data","加入收藏成功");
+                break;
 
-        }else {
-            retObject.put("code", "error");
-            retObject.put("data", "加入收藏失败");
         }
 
         return retObject.toString();

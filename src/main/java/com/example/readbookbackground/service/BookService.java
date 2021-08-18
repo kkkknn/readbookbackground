@@ -62,15 +62,18 @@ public class BookService {
 
     /**
      * 收藏图书
-     * @param   favoriteInfo 收藏图书信息
+     * @param   book_id 图书id
+     * @param   account_id 用户id
      * @return  boolean类型 是否成功
      */
-    public boolean addFavoriteBook(FavoriteInfo favoriteInfo){
+    public int addFavoriteBook(int book_id,int account_id){
         //检查是否添加成功过
-        if(favoriteInfo==null||bookMapper.checkFavoriteBook(favoriteInfo)!=null){
-            return false;
+        if(bookMapper.checkFavoriteBook(book_id,account_id)!=null){
+            return 0;
+        }else if(bookMapper.insertFavoriteBook(book_id,account_id)==1){
+            return 1;
         }else {
-            return bookMapper.insertFavoriteBook(favoriteInfo)==1;
+            return -1;
         }
     }
 
@@ -91,10 +94,10 @@ public class BookService {
 
     /**
      * 章节表添加图书章节 添加之后动态增加图书表的总章节数量
-     * @param bookId
-     * @param chapterName
-     * @param chapterPath
-     * @return
+     * @param bookId 图书id
+     * @param chapterName 章节名字
+     * @param chapterPath 章节文件存储路径
+     * @return 是否成功
      */
     public boolean addChapter(int bookId,String chapterName,String chapterPath){
         int val=bookMapper.insertChapter(bookId,chapterName,chapterPath);
