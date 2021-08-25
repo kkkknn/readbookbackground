@@ -144,13 +144,13 @@ public class BookController {
     @RequestMapping("/getChapterContent")
     public String getChapterContent(String chapter_path){
         JSONObject jsonObject=new JSONObject();
-        String content=bookService.getChapter(chapter_path);
-        if(content==null){
+        JSONArray jsonArray=bookService.getChapter(chapter_path);
+        if(jsonArray==null||jsonArray.size()==0){
             jsonObject.put("code","error");
             jsonObject.put("data","读取章节错误");
         }else {
             jsonObject.put("code","success");
-            jsonObject.put("data",content);
+            jsonObject.put("data",jsonArray);
         }
         return jsonObject.toString();
     }

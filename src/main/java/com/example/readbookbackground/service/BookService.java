@@ -1,5 +1,6 @@
 package com.example.readbookbackground.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.readbookbackground.enums.BookInfo;
 import com.example.readbookbackground.enums.ChapterInfo;
@@ -45,7 +46,7 @@ public class BookService {
         return bookMapper.getBookInfo(bookId);
     }
 
-    public String getChapter(String url){
+    public JSONArray getChapter(String url){
         return FileUtil.getChapterContent(url);
     }
 

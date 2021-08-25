@@ -1,5 +1,6 @@
 package com.example.readbookbackground.util;
 
+import com.alibaba.fastjson.JSONArray;
 import com.example.readbookbackground.enums.BookInfo;
 
 import javax.servlet.http.HttpServletResponse;
@@ -138,12 +139,12 @@ public class FileUtil {
      * @param filePath 文件的本地目录
      * @return
      */
-    public static String getChapterContent(String filePath){
+    public static JSONArray getChapterContent(String filePath){
         File file=new File(filePath);
         if(!file.exists()){
             return null;
         }
-        StringBuffer stringBuffer=new StringBuffer();
+        JSONArray jsonArray=new JSONArray();
 
         BufferedReader bufferedReader=null;
         try {
@@ -151,8 +152,7 @@ public class FileUtil {
             String temp_string=null;
             int line=-1;
             while ((temp_string=bufferedReader.readLine())!=null){
-                stringBuffer.append(temp_string);
-
+                jsonArray.add(temp_string);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -164,9 +164,8 @@ public class FileUtil {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
-        return stringBuffer.toString();
+        return jsonArray;
     }
 
     /**
