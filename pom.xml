@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.example</groupId>
     <artifactId>readbookbackground</artifactId>
-    <version>0.1.1-SNAPSHOT</version>
+    <version>0.2.211103</version>
     <name>readbookbackground</name>
     <packaging>jar</packaging>
     <description>Demo project for Spring Boot</description>

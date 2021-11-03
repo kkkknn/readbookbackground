@@ -21,7 +21,7 @@ public class APPController {
     }
 
     @ResponseBody
-    @PostMapping("/getVersionInfo")
+    @GetMapping("/getVersionInfo")
     public String getVersionInfo() {
         JSONObject jsonObject=new JSONObject();
         String valueStr=appService.getVersionInfo();

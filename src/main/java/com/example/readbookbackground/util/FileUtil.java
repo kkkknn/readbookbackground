@@ -24,7 +24,6 @@ public class FileUtil {
             if(files!=null){
                 for (File file:files) {
                     if(file.getName().endsWith(".json")){
-                        System.out.println("666"+file.toPath());
                         //读取文件内容， 解析json字符串
                         StringBuilder stringBuilder=new StringBuilder();
                         BufferedReader  reader = null;
@@ -43,31 +42,25 @@ public class FileUtil {
                                     .replace("}","")
                                     .replace("{","")
                                     .split(",");
-                            System.out.println(stringBuilder.toString());
                             for (String str:values) {
-                                System.out.println(str);
                                 String[] arr=str.split(":");
                                 for (int i = 0; i < arr.length; i+=2) {
                                     switch (arr[i]){
                                         case "book_name":
                                             bookInfo.setBook_name(arr[i+1]);
-                                            System.out.println(1111+arr[i+1]);
                                             break;
                                         case "author_name":
                                             bookInfo.setAuthor_name(arr[i+1]);
-                                            System.out.println(222222222+arr[i+1]);
                                             break;
                                         case "source_name":
                                             bookInfo.setSource_name(arr[i+1]);
-                                            System.out.println(33333+arr[i+1]);
                                             break;
                                         case "near_chapter_name":
                                             //此处读取的info.json文件，并不是实际保存的最新章节，所以不写入
-                                            //bookInfo.setBook_near_chapter(StringUtil.unicodeToCn(arr[i+1]));
+                                            bookInfo.setBook_near_chapter(arr[i+1]);
                                             break;
                                         case "book_about":
                                             bookInfo.setBook_about(arr[i+1]);
-                                            System.out.println(444444+arr[i+1]);
                                             break;
                                         default:
                                             System.out.println("没找到");
@@ -89,7 +82,6 @@ public class FileUtil {
                 }
             }
         }
-        System.out.println(bookInfo);
         return bookInfo;
     }
 
@@ -217,6 +209,7 @@ public class FileUtil {
         }
         response.setContentType("text/html;charset=utf-8");
         response.setCharacterEncoding("utf-8");
+        response.setHeader("Content-Length", ""+f.length());
         InputStream in = null;
         OutputStream out = null;
         try {
@@ -233,7 +226,6 @@ public class FileUtil {
                 out.write(buffer,0,len);
             }
             //这一步走完，将文件传入OutputStream中后，页面就会弹出下载框
-
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

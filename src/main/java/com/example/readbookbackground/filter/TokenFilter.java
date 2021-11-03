@@ -52,7 +52,6 @@ public class TokenFilter implements Filter {
         }else{
             if (null == token || token.isEmpty()||idStr==null||idStr.isEmpty()) {
                 String ss=((HttpServletRequest) servletRequest).getServletPath();
-                System.out.println(ss);
                 if("/account/login".equals(ss)||"/account/register".equals(ss)){
                     isFilter=true;
                 }else{
@@ -68,11 +67,9 @@ public class TokenFilter implements Filter {
                 //开始认证token和用户id
                 String token2=(String) redisService.get("token_"+idStr);
                 isFilter=token.equals(token2);
-                System.out.println("验证结果"+isFilter+"||"+token+"|"+token2);
             }
             //根据结果决定是否放行
             if (isFilter) {
-                System.out.println("token验证成功，放行");
                 filterChain.doFilter(servletRequest,servletResponse);
             }else {
                 JSONObject jsonObject=new JSONObject();
