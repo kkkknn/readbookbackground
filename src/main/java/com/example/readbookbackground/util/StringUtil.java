@@ -30,4 +30,18 @@ public class StringUtil {
     public static boolean isEmpty(String str){
         return str==null||str.isEmpty();
     }
+
+    public static boolean isImgFilePath(String path){
+        if(isEmpty(path)){
+            return false;
+        }
+        return path.endsWith(".jpg")||path.endsWith(".png")||path.endsWith(".bmp")||path.endsWith(".gif")||path.endsWith(".jpeg");
+    }
+
+    public static boolean isAPKFilePath(String path){
+        if(isEmpty(path)){
+            return false;
+        }
+        return path.endsWith(".apk");
+    }
 }

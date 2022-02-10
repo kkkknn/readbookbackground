@@ -171,7 +171,11 @@ public class BookController {
 
     @ResponseBody
     @GetMapping("/downloadBookImage")
-    public void downloadAPK(HttpServletResponse response, String urlPath) {
+    public void downloadBookImage(HttpServletResponse response, String urlPath) {
+        //验证路径是否正确
+        if(StringUtil.isEmpty(urlPath)&&urlPath.endsWith(".jpg")){
+
+        }
         FileUtil.downloadFile(response, urlPath);
     }
 

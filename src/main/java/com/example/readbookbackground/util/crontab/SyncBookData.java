@@ -23,11 +23,46 @@ public class SyncBookData {
         this.bookService = bookService;
     }
 
+    public static void testSyncBookData() {
+        File dir=new File(path);
+        if(dir.isDirectory()){
+            File[] sources=dir.listFiles();
+            ArrayList<File> source_list=new ArrayList<>();
+            //遍历获取所有来源目录
+            if(sources==null){
+                System.out.println("图书来源获取为空");
+                return;
+            }
+            for (File file :sources) {
+                if(file.isDirectory()){
+                    source_list.add(file);
+                }
+            }
+            //获取目录内所有书籍目录
+            for (File value : source_list) {
+                File[] book_path = value.listFiles();
+                if (book_path == null) {
+                    continue;
+                }
+                for (File file : book_path) {
+                    //获取图书信息图书名字，作者名字，最新章节名字
+                    BookInfo bookInfo = FileUtil.getBookInfo(file.toPath().toString());
+                    ArrayList<String[]> list = FileUtil.getChapterList(bookInfo.getBook_url());
+                    bookInfo.setBook_chapter_sum(list.size());
+                    System.out.println(bookInfo.toString());
+                }
+            }
+        }
+        System.err.println("执行静态定时任务时间: " + LocalDateTime.now());
+    }
+
     /**
      * 每日0点定时同步本地文件及数据库
      */
     @Scheduled(cron = "0 0 0 * * ?")
     public void syncData() {
+        //程序开始时间
+        long startTime=System.currentTimeMillis();
         //读取本地磁盘路径 根据图书来源分几部分
         File dir=new File(path);
         if(dir.isDirectory()){
@@ -86,7 +121,8 @@ public class SyncBookData {
                 }
             }
         }
-        System.err.println("执行静态定时任务时间: " + LocalDateTime.now());
+        long endTime=System.currentTimeMillis(); //获取结束时间
+        System.err.println("执行静态定时任务时间: " + (endTime-startTime)+"ms");
     }
 
 

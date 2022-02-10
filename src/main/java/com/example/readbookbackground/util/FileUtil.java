@@ -1,6 +1,7 @@
 package com.example.readbookbackground.util;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.example.readbookbackground.enums.BookInfo;
 
 import javax.servlet.http.HttpServletResponse;
@@ -37,37 +38,18 @@ public class FileUtil {
                                 stringBuilder.append(tempString);
                             }
                             //String s=new String(stringBuilder.toString().getBytes("GBK"),"UTF-8");
-                            String[] values=stringBuilder.toString()
-                                    .replace("\"","")
-                                    .replace("}","")
-                                    .replace("{","")
-                                    .split(",");
-                            for (String str:values) {
-                                String[] arr=str.split(":");
-                                for (int i = 0; i < arr.length; i+=2) {
-                                    switch (arr[i]){
-                                        case "book_name":
-                                            bookInfo.setBook_name(arr[i+1]);
-                                            break;
-                                        case "author_name":
-                                            bookInfo.setAuthor_name(arr[i+1]);
-                                            break;
-                                        case "source_name":
-                                            bookInfo.setSource_name(arr[i+1]);
-                                            break;
-                                        case "near_chapter_name":
-                                            //此处读取的info.json文件，并不是实际保存的最新章节，所以不写入
-                                            bookInfo.setBook_near_chapter(arr[i+1]);
-                                            break;
-                                        case "book_about":
-                                            bookInfo.setBook_about(arr[i+1]);
-                                            break;
-                                        default:
-                                            System.out.println("没找到");
-                                            break;
-                                    }
-                                }
-                            }
+                            JSONObject jsonObject=JSONObject.parseObject(stringBuilder.toString());
+                            String bookName=jsonObject.getString("book_name");
+                            String authorName=jsonObject.getString("author_name");
+                            String sourceName=jsonObject.getString("source_name");
+                            String nearChapterName=jsonObject.getString("near_chapter_name");
+                            String bookAbout=jsonObject.getString("book_about");
+                            bookInfo.setBook_name(bookName);
+                            bookInfo.setAuthor_name(authorName);
+                            bookInfo.setSource_name(sourceName);
+                            bookInfo.setBook_near_chapter(nearChapterName);
+                            bookInfo.setBook_about(bookAbout);
+
                             reader.close();
                         } catch (FileNotFoundException e) {
                             System.out.println(file.toPath()+"文件未找到");
@@ -203,9 +185,11 @@ public class FileUtil {
         if (!f.exists()) {
             try {
                 response.sendError(404, "File not found!");
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            return;
         }
         response.setContentType("text/html;charset=utf-8");
         response.setCharacterEncoding("utf-8");
