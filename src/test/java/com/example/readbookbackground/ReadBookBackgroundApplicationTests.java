@@ -11,7 +11,7 @@ class ReadBookBackgroundApplicationTests {
     @Test
     void contextLoads() {
         //读取文件
-        SyncBookData.testSyncBookData();
+        //SyncBookData.testSyncBookData();
 
     }
 
