@@ -101,7 +101,7 @@ public class SyncBookData {
                             if(val>0){
                                 //数据库存储完成后，更新最新章节及总章节
                                 boolean flag=bookService.updateChapterSum(ret_bookInfo.getBook_id(),val,ret_bookInfo.getBook_near_chapter());
-                                System.out.println("图书书名："+bookInfo.getBook_name()+" 更新章节数量："+flag);
+                                System.out.println(flag?("图书书名："+bookInfo.getBook_name()+" 更新章节数量："+val):"添加到数据库失败");
                             }
                         }
                     }else{
@@ -113,7 +113,7 @@ public class SyncBookData {
                             if(sum>0){
                                 //数据库存储完成后，更新最新章节及总章节
                                 boolean flag=bookService.updateChapterSum(val_bookInfo.getBook_id(),sum,val_bookInfo.getBook_near_chapter());
-                                System.out.println("图书书名："+bookInfo.getBook_name()+" 更新章节数量："+flag);
+                                System.out.println(flag?("图书书名："+bookInfo.getBook_name()+" 更新章节数量："+sum):"添加到数据库失败");
                             }
 
                         }
