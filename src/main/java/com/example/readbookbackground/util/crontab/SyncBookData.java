@@ -16,7 +16,7 @@ import java.util.ArrayList;
 @EnableScheduling
 public class SyncBookData {
     private final BookService bookService;
-    private final static String path="/home/clonebook_application/books_save";
+    private final static String path="/home/ubuntu/clone_project/clone_source/books_save";
 
     @Autowired
     public SyncBookData(BookService bookService) {
